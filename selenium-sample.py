@@ -1,23 +1,62 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from bs4 import BeautifulSoup
 import time
 
-# WebDriver‚ÌƒZƒbƒgƒAƒbƒviChrome‚ğg—pj
+##################################################################
+# WebDriverã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ï¼ˆChromeã‚’ä½¿ç”¨ï¼‰
 driver = webdriver.Chrome()
 
-# Webƒy[ƒW‚ğŠJ‚­
-driver.get("https://example.com")  # ‚±‚±‚É‘ÎÛ‚ÌURL‚ğw’è
+##################################################################
+# Seleniumã§ãƒšãƒ¼ã‚¸ã‚’å–å¾—
+driver.get("https://example.com")  # ã“ã“ã«å¯¾è±¡ã®URLã‚’æŒ‡å®š
 
-# ƒŠƒ“ƒN‚ğŒ©‚Â‚¯‚ÄƒNƒŠƒbƒN
-link = driver.find_element(By.LINK_TEXT, "ƒŠƒ“ƒN‚ÌƒeƒLƒXƒg")  # ƒeƒLƒXƒg‚©‚çŒŸõ
-# link = driver.find_element(By.PARTIAL_LINK_TEXT, "ˆê•”‚ÌƒeƒLƒXƒg")  # ˆê•”‚ÌƒeƒLƒXƒg‚©‚çŒŸõ
-# link = driver.find_element(By.XPATH, "//a[@href='ƒŠƒ“ƒN‚ÌURL']")  # XPath‚ğg‚¤
-link.click()
+##################################################################
+# ãƒªãƒ³ã‚¯ã‚’è¦‹ã¤ã‘ã¦ã‚¯ãƒªãƒƒã‚¯
+link1 = driver.find_element(By.LINK_TEXT, "ãƒªãƒ³ã‚¯ã®ãƒ†ã‚­ã‚¹ãƒˆ")  # ãƒ†ã‚­ã‚¹ãƒˆã‹ã‚‰æ¤œç´¢
+link1.click()
+link2 = driver.find_element(By.PARTIAL_LINK_TEXT, "ä¸€éƒ¨ã®ãƒ†ã‚­ã‚¹ãƒˆ")  # ä¸€éƒ¨ã®ãƒ†ã‚­ã‚¹ãƒˆã‹ã‚‰æ¤œç´¢
+link2.click()
+link3 = driver.find_element(By.XPATH, "//a[@href='ãƒªãƒ³ã‚¯ã®URL']")  # XPathã‚’ä½¿ã†
+link3.click()
 
-# ‚µ‚Î‚ç‚­‘Ò‹@iƒy[ƒW‘JˆÚ‚È‚Ç‚Ì‚½‚ßj
+##################################################################
+# ã—ã°ã‚‰ãå¾…æ©Ÿï¼ˆãƒšãƒ¼ã‚¸é·ç§»ãªã©ã®ãŸã‚ï¼‰
 time.sleep(5)
 
-# ƒuƒ‰ƒEƒU‚ğ•Â‚¶‚é
-driver.quit()
+##################################################################
+# ãƒšãƒ¼ã‚¸ã®HTMLã‚’å–å¾—
+html = driver.page_source
+print("---------------------------html: ", html)
 
+##################################################################
+element = driver.find_element("tag name", "body")
+print("--------------------------- body: ", element.get_attribute("outerHTML"))
+
+##################################################################
+# è¦ç´ ã‚’å–å¾—
+element2 = driver.find_element(By.ID, "example_id")
+# å±æ€§å€¤ã‚’å–å¾—
+attribute_value = element2.get_attribute("href")
+print("--------------------------- href: ", attribute_value)
+
+##################################################################
+# ãƒšãƒ¼ã‚¸ã®HTMLã‚’å–å¾—
+html2 = driver.page_source
+time.sleep(5)
+print("---------------------------html2: ", html)
+# BeautifulSoupã§è§£æ 
+soup1 = BeautifulSoup(html2, "lxml")
+title=soup1.find("title").text
+print("---------------------------html2 soup title: ", title)
+# BeautifulSoupã§è§£æ ALL!!!
+soup2 = BeautifulSoup(html2, "lxml")
+title=soup2.find_all(class_="title")
+print("---------------------------html2 soup title: ", title)
+
+##################################################################
+time.sleep(60)
+# WebDriverã‚’é–‰ã˜ã‚‹
+driver.quit()
+##################################################################
